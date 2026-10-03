@@ -106,12 +106,12 @@ layer.videoGravity = .resizeAspectFill
 
 ## 5-bosqich: Interaktiv va ob-havo effektlari (1–2 hafta)
 
-- [ ] Video ustiga shaffof `SKView` qatlami
-- [ ] Effektlar: yomg'ir, qor, zarrachalar
-- [ ] Ob-havo: Open-Meteo API (bepul, kalitsiz). WeatherKit pullik developer akkaunt talab qiladi
-- [ ] Sichqonchaga reaksiya: `NSEvent.mouseLocation` ni timer bilan o'qish (oyna `ignoresMouseEvents` holatida qoladi)
-- [ ] Parallax va zarrachalarning kursordan qochishi
-- [ ] (Ixtiyoriy) Murakkab shader effektlar uchun Metal
+- [x] Video ustiga shaffof `SKView` qatlami
+- [x] Effektlar: yomg'ir, qor, zarrachalar
+- [x] Ob-havo: Open-Meteo API (bepul, kalitsiz). WeatherKit pullik developer akkaunt talab qiladi
+- [x] Sichqonchaga reaksiya: `NSEvent.mouseLocation` ni timer bilan o'qish (oyna `ignoresMouseEvents` holatida qoladi)
+- [x] Parallax va zarrachalarning kursordan qochishi
+- [x] (Ixtiyoriy) Murakkab shader effektlar uchun Metal
 
 ## 6-bosqich: Video lock screen (eksperimental)
 
