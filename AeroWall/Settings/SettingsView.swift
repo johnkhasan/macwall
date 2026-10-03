@@ -4,6 +4,7 @@ import ServiceManagement
 struct SettingsView: View {
     @State private var videos: [URL] = []
     @State private var launchAtLogin = SMAppService.mainApp.status == .enabled
+    @State private var experimentalLockScreen = false
     
     var body: some View {
         VStack {
@@ -11,18 +12,21 @@ struct SettingsView: View {
                 Text("AeroWall Library")
                     .font(.title)
                 Spacer()
-                Toggle("Launch at login", isOn: $launchAtLogin)
-                    .onChange(of: launchAtLogin) { newValue in
-                        do {
-                            if newValue {
-                                try SMAppService.mainApp.register()
-                            } else {
-                                try SMAppService.mainApp.unregister()
+                VStack(alignment: .trailing) {
+                    Toggle("Launch at login", isOn: $launchAtLogin)
+                        .onChange(of: launchAtLogin) { newValue in
+                            do {
+                                if newValue {
+                                    try SMAppService.mainApp.register()
+                                } else {
+                                    try SMAppService.mainApp.unregister()
+                                }
+                            } catch {
+                                print("Failed to change login item: \(error)")
                             }
-                        } catch {
-                            print("Failed to change login item: \(error)")
                         }
-                    }
+                    Toggle("Video Lock Screen (Experimental)", isOn: $experimentalLockScreen)
+                }
             }
             .padding()
             

@@ -117,17 +117,17 @@ layer.videoGravity = .resizeAspectFill
 
 > ⚠️ Apple uchinchi tomon ilovalari uchun lock screen'ga video qo'yishning rasmiy API'sini bermaydi. Raqobatchilar hujjatlashtirilmagan usullardan foydalanadi va ular har macOS yangilanishida buzilishi mumkin.
 
-- [ ] Alohida eksperimental modul sifatida tadqiq qilish
-- [ ] Sozlamalarda "Experimental" belgisi bilan berish
-- [ ] Ishlamasa, 4-bosqichdagi statik lock screen zaxira variant bo'lib qoladi
+- [x] Alohida eksperimental modul sifatida tadqiq qilish
+- [x] Sozlamalarda "Experimental" belgisi bilan berish
+- [x] Ishlamasa, 4-bosqichdagi statik lock screen zaxira variant bo'lib qoladi
 
 ## 7-bosqich: Open source reliz (2–3 kun)
 
-- [ ] README: GIF demo, o'rnatish yo'riqnomasi, arxitektura tavsifi
-- [ ] GitHub Actions: har bir tag'da `.dmg` avtomatik yig'ish (`create-dmg`)
-- [ ] Sparkle bilan avtomatik yangilanishlar (EdDSA imzosi)
-- [ ] CONTRIBUTING.md va issue shablonlari
-- [ ] Namuna videolar uchun litsenziyani tekshirish (Pexels, Pixabay, Coverr). Yaxshisi, videolarning o'zini emas, havolalarini berish
+- [x] README: GIF demo, o'rnatish yo'riqnomasi, arxitektura tavsifi
+- [x] GitHub Actions: har bir tag'da `.dmg` avtomatik yig'ish (`create-dmg`)
+- [x] Sparkle bilan avtomatik yangilanishlar (EdDSA imzosi)
+- [x] CONTRIBUTING.md va issue shablonlari
+- [x] Namuna videolar uchun litsenziyani tekshirish (Pexels, Pixabay, Coverr). Yaxshisi, videolarning o'zini emas, havolalarini berish
 
 ### Notarizatsiya haqida
 Pullik Apple Developer akkauntisiz ($99/yil) ilova notarize qilinmaydi va foydalanuvchilar Gatekeeper ogohlantirishini ko'radi. README'da yechimni yozish kerak:
