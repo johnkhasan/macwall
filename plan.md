@@ -64,21 +64,21 @@ layer.videoGravity = .resizeAspectFill
 ## 2-bosqich: Ko'p monitor, kutubxona, menu bar (1 hafta)
 
 ### Ko'p monitor
-- [ ] Har bir `NSScreen` uchun alohida `WallpaperWindow`
-- [ ] `NSApplication.didChangeScreenParametersNotification` orqali monitor ulanishi/uzilishini kuzatish
-- [ ] Monitorni `CGDirectDisplayID` orqali aniqlash va eslab qolish
-- [ ] "Bitta video barcha monitorlarda" rejimi: bitta `AVPlayer` → bir nechta `AVPlayerLayer` (video faqat bir marta decode qilinadi)
+- [x] Har bir `NSScreen` uchun alohida `WallpaperWindow`
+- [x] `NSApplication.didChangeScreenParametersNotification` orqali monitor ulanishi/uzilishini kuzatish
+- [x] Monitorni `CGDirectDisplayID` orqali aniqlash va eslab qolish
+- [x] "Bitta video barcha monitorlarda" rejimi: bitta `AVPlayer` → bir nechta `AVPlayerLayer` (video faqat bir marta decode qilinadi)
 
 ### Kutubxona
-- [ ] Drag-and-drop: SwiftUI `.dropDestination(for: URL.self)`
-- [ ] Fayllarni `~/Library/Application Support/<AppNomi>/Videos/` ga nusxalash
-- [ ] Thumbnail yaratish: `AVAssetImageGenerator`
-- [ ] Videoni o'chirish va qayta nomlash
+- [x] Drag-and-drop: SwiftUI `.dropDestination(for: URL.self)`
+- [x] Fayllarni `~/Library/Application Support/<AppNomi>/Videos/` ga nusxalash
+- [x] Thumbnail yaratish: `AVAssetImageGenerator`
+- [x] Videoni o'chirish va qayta nomlash
 
 ### Tizim integratsiyasi
-- [ ] Menu bar: `MenuBarExtra`
-- [ ] Login'da avtomatik ishga tushish: `SMAppService.mainApp.register()`
-- [ ] Har bir monitor uchun tanlovni SwiftData'da saqlash
+- [x] Menu bar: `MenuBarExtra`
+- [x] Login'da avtomatik ishga tushish: `SMAppService.mainApp.register()`
+- [x] Har bir monitor uchun tanlovni SwiftData'da saqlash
 
 ## 3-bosqich: Aqlli pauza va optimizatsiya (3–5 kun)
 
