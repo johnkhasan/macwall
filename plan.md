@@ -99,10 +99,10 @@ layer.videoGravity = .resizeAspectFill
 
 ## 4-bosqich: Playlist, kun/tun rejimi, statik lock screen (1 hafta)
 
-- [ ] Har bir monitor uchun playlist va almashish intervali
-- [ ] Crossfade o'tish: ikkita `AVPlayerLayer` + opacity animatsiyasi
-- [ ] Kun/tun rejimi: `NSApp.effectiveAppearance` ni KVO orqali kuzatish, light/dark playlistlarni almashtirish
-- [ ] Statik lock screen: video kadrini PNG qilib chiqarish → `NSWorkspace.shared.setDesktopImageURL(_:for:options:)` (Sonoma+ da lock screen va Mission Control shu rasmni ko'rsatadi)
+- [x] Har bir monitor uchun playlist va almashish intervali
+- [x] Crossfade o'tish: ikkita `AVPlayerLayer` + opacity animatsiyasi
+- [x] Kun/tun rejimi: `NSApp.effectiveAppearance` ni KVO orqali kuzatish, light/dark playlistlarni almashtirish
+- [x] Statik lock screen: video kadrini PNG qilib chiqarish → `NSWorkspace.shared.setDesktopImageURL(_:for:options:)` (Sonoma+ da lock screen va Mission Control shu rasmni ko'rsatadi)
 
 ## 5-bosqich: Interaktiv va ob-havo effektlari (1–2 hafta)
 
