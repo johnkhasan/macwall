@@ -1,0 +1,71 @@
+{
+  "" : {
+    "const-values" : "/Users/javohirhasanov/Desktop/programming/macwall/build/Build/Intermediates.noindex/AeroWall.build/Release/AeroWall.build/Objects-normal/arm64/AeroWall-primary.swiftconstvalues",
+    "dependencies" : "/Users/javohirhasanov/Desktop/programming/macwall/build/Build/Intermediates.noindex/AeroWall.build/Release/AeroWall.build/Objects-normal/arm64/AeroWall-primary.d",
+    "diagnostics" : "/Users/javohirhasanov/Desktop/programming/macwall/build/Build/Intermediates.noindex/AeroWall.build/Release/AeroWall.build/Objects-normal/arm64/AeroWall-primary.dia",
+    "emit-module-dependencies" : "/Users/javohirhasanov/Desktop/programming/macwall/build/Build/Intermediates.noindex/AeroWall.build/Release/AeroWall.build/Objects-normal/arm64/AeroWall-primary-emit-module.d",
+    "emit-module-diagnostics" : "/Users/javohirhasanov/Desktop/programming/macwall/build/Build/Intermediates.noindex/AeroWall.build/Release/AeroWall.build/Objects-normal/arm64/AeroWall-primary-emit-module.dia",
+    "pch" : "/Users/javohirhasanov/Desktop/programming/macwall/build/Build/Intermediates.noindex/AeroWall.build/Release/AeroWall.build/Objects-normal/arm64/AeroWall-primary-Bridging-header.pch",
+    "swift-dependencies" : "/Users/javohirhasanov/Desktop/programming/macwall/build/Build/Intermediates.noindex/AeroWall.build/Release/AeroWall.build/Objects-normal/arm64/AeroWall-primary.swiftdeps"
+  },
+  "/Users/javohirhasanov/Desktop/programming/macwall/AeroWall/App/AeroWallApp.swift" : {
+    "index-unit-output-path" : "/AeroWall.build/Release/AeroWall.build/Objects-normal/arm64/AeroWallApp.o",
+    "llvm-bc" : "/Users/javohirhasanov/Desktop/programming/macwall/build/Build/Intermediates.noindex/AeroWall.build/Release/AeroWall.build/Objects-normal/arm64/AeroWallApp.bc",
+    "object" : "/Users/javohirhasanov/Desktop/programming/macwall/build/Build/Intermediates.noindex/AeroWall.build/Release/AeroWall.build/Objects-normal/arm64/AeroWallApp.o"
+  },
+  "/Users/javohirhasanov/Desktop/programming/macwall/AeroWall/App/AppDelegate.swift" : {
+    "index-unit-output-path" : "/AeroWall.build/Release/AeroWall.build/Objects-normal/arm64/AppDelegate.o",
+    "llvm-bc" : "/Users/javohirhasanov/Desktop/programming/macwall/build/Build/Intermediates.noindex/AeroWall.build/Release/AeroWall.build/Objects-normal/arm64/AppDelegate.bc",
+    "object" : "/Users/javohirhasanov/Desktop/programming/macwall/build/Build/Intermediates.noindex/AeroWall.build/Release/AeroWall.build/Objects-normal/arm64/AppDelegate.o"
+  },
+  "/Users/javohirhasanov/Desktop/programming/macwall/AeroWall/Effects/ParticleScene.swift" : {
+    "index-unit-output-path" : "/AeroWall.build/Release/AeroWall.build/Objects-normal/arm64/ParticleScene.o",
+    "llvm-bc" : "/Users/javohirhasanov/Desktop/programming/macwall/build/Build/Intermediates.noindex/AeroWall.build/Release/AeroWall.build/Objects-normal/arm64/ParticleScene.bc",
+    "object" : "/Users/javohirhasanov/Desktop/programming/macwall/build/Build/Intermediates.noindex/AeroWall.build/Release/AeroWall.build/Objects-normal/arm64/ParticleScene.o"
+  },
+  "/Users/javohirhasanov/Desktop/programming/macwall/AeroWall/Effects/WeatherService.swift" : {
+    "index-unit-output-path" : "/AeroWall.build/Release/AeroWall.build/Objects-normal/arm64/WeatherService.o",
+    "llvm-bc" : "/Users/javohirhasanov/Desktop/programming/macwall/build/Build/Intermediates.noindex/AeroWall.build/Release/AeroWall.build/Objects-normal/arm64/WeatherService.bc",
+    "object" : "/Users/javohirhasanov/Desktop/programming/macwall/build/Build/Intermediates.noindex/AeroWall.build/Release/AeroWall.build/Objects-normal/arm64/WeatherService.o"
+  },
+  "/Users/javohirhasanov/Desktop/programming/macwall/AeroWall/Engine/ScreenManager.swift" : {
+    "index-unit-output-path" : "/AeroWall.build/Release/AeroWall.build/Objects-normal/arm64/ScreenManager.o",
+    "llvm-bc" : "/Users/javohirhasanov/Desktop/programming/macwall/build/Build/Intermediates.noindex/AeroWall.build/Release/AeroWall.build/Objects-normal/arm64/ScreenManager.bc",
+    "object" : "/Users/javohirhasanov/Desktop/programming/macwall/build/Build/Intermediates.noindex/AeroWall.build/Release/AeroWall.build/Objects-normal/arm64/ScreenManager.o"
+  },
+  "/Users/javohirhasanov/Desktop/programming/macwall/AeroWall/Engine/WallpaperWindow.swift" : {
+    "index-unit-output-path" : "/AeroWall.build/Release/AeroWall.build/Objects-normal/arm64/WallpaperWindow.o",
+    "llvm-bc" : "/Users/javohirhasanov/Desktop/programming/macwall/build/Build/Intermediates.noindex/AeroWall.build/Release/AeroWall.build/Objects-normal/arm64/WallpaperWindow.bc",
+    "object" : "/Users/javohirhasanov/Desktop/programming/macwall/build/Build/Intermediates.noindex/AeroWall.build/Release/AeroWall.build/Objects-normal/arm64/WallpaperWindow.o"
+  },
+  "/Users/javohirhasanov/Desktop/programming/macwall/AeroWall/Library/HEVCConverter.swift" : {
+    "index-unit-output-path" : "/AeroWall.build/Release/AeroWall.build/Objects-normal/arm64/HEVCConverter.o",
+    "llvm-bc" : "/Users/javohirhasanov/Desktop/programming/macwall/build/Build/Intermediates.noindex/AeroWall.build/Release/AeroWall.build/Objects-normal/arm64/HEVCConverter.bc",
+    "object" : "/Users/javohirhasanov/Desktop/programming/macwall/build/Build/Intermediates.noindex/AeroWall.build/Release/AeroWall.build/Objects-normal/arm64/HEVCConverter.o"
+  },
+  "/Users/javohirhasanov/Desktop/programming/macwall/AeroWall/Library/VideoImporter.swift" : {
+    "index-unit-output-path" : "/AeroWall.build/Release/AeroWall.build/Objects-normal/arm64/VideoImporter.o",
+    "llvm-bc" : "/Users/javohirhasanov/Desktop/programming/macwall/build/Build/Intermediates.noindex/AeroWall.build/Release/AeroWall.build/Objects-normal/arm64/VideoImporter.bc",
+    "object" : "/Users/javohirhasanov/Desktop/programming/macwall/build/Build/Intermediates.noindex/AeroWall.build/Release/AeroWall.build/Objects-normal/arm64/VideoImporter.o"
+  },
+  "/Users/javohirhasanov/Desktop/programming/macwall/AeroWall/Power/PauseController.swift" : {
+    "index-unit-output-path" : "/AeroWall.build/Release/AeroWall.build/Objects-normal/arm64/PauseController.o",
+    "llvm-bc" : "/Users/javohirhasanov/Desktop/programming/macwall/build/Build/Intermediates.noindex/AeroWall.build/Release/AeroWall.build/Objects-normal/arm64/PauseController.bc",
+    "object" : "/Users/javohirhasanov/Desktop/programming/macwall/build/Build/Intermediates.noindex/AeroWall.build/Release/AeroWall.build/Objects-normal/arm64/PauseController.o"
+  },
+  "/Users/javohirhasanov/Desktop/programming/macwall/AeroWall/Scheduling/AppearanceObserver.swift" : {
+    "index-unit-output-path" : "/AeroWall.build/Release/AeroWall.build/Objects-normal/arm64/AppearanceObserver.o",
+    "llvm-bc" : "/Users/javohirhasanov/Desktop/programming/macwall/build/Build/Intermediates.noindex/AeroWall.build/Release/AeroWall.build/Objects-normal/arm64/AppearanceObserver.bc",
+    "object" : "/Users/javohirhasanov/Desktop/programming/macwall/build/Build/Intermediates.noindex/AeroWall.build/Release/AeroWall.build/Objects-normal/arm64/AppearanceObserver.o"
+  },
+  "/Users/javohirhasanov/Desktop/programming/macwall/AeroWall/Scheduling/PlaylistManager.swift" : {
+    "index-unit-output-path" : "/AeroWall.build/Release/AeroWall.build/Objects-normal/arm64/PlaylistManager.o",
+    "llvm-bc" : "/Users/javohirhasanov/Desktop/programming/macwall/build/Build/Intermediates.noindex/AeroWall.build/Release/AeroWall.build/Objects-normal/arm64/PlaylistManager.bc",
+    "object" : "/Users/javohirhasanov/Desktop/programming/macwall/build/Build/Intermediates.noindex/AeroWall.build/Release/AeroWall.build/Objects-normal/arm64/PlaylistManager.o"
+  },
+  "/Users/javohirhasanov/Desktop/programming/macwall/AeroWall/Settings/SettingsView.swift" : {
+    "index-unit-output-path" : "/AeroWall.build/Release/AeroWall.build/Objects-normal/arm64/SettingsView.o",
+    "llvm-bc" : "/Users/javohirhasanov/Desktop/programming/macwall/build/Build/Intermediates.noindex/AeroWall.build/Release/AeroWall.build/Objects-normal/arm64/SettingsView.bc",
+    "object" : "/Users/javohirhasanov/Desktop/programming/macwall/build/Build/Intermediates.noindex/AeroWall.build/Release/AeroWall.build/Objects-normal/arm64/SettingsView.o"
+  }
+}

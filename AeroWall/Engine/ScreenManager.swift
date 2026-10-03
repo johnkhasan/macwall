@@ -14,6 +14,7 @@ class ScreenManager {
     }
     
     func playVideo(at url: URL) {
+        UserDefaults.standard.set(url.path, forKey: "lastVideoPath")
         let player = AVQueuePlayer()
         player.isMuted = true
         self.player = player
@@ -68,6 +69,11 @@ class ScreenManager {
                 windows[displayID] = window
             } else {
                 windows[displayID]?.setFrame(screen.frame, display: true)
+                windows[displayID]?.playerLayer.player = player
+            }
+            
+            if let url = (player.currentItem?.asset as? AVURLAsset)?.url {
+                setDesktopImage(from: url, for: screen)
             }
         }
         
@@ -76,6 +82,29 @@ class ScreenManager {
                 window.close()
                 windows.removeValue(forKey: displayID)
             }
+        }
+    }
+    
+    private func setDesktopImage(from videoURL: URL, for screen: NSScreen) {
+        let asset = AVURLAsset(url: videoURL)
+        let generator = AVAssetImageGenerator(asset: asset)
+        generator.appliesPreferredTrackTransform = true
+        
+        do {
+            let cgImage = try generator.copyCGImage(at: .zero, actualTime: nil)
+            let nsImage = NSImage(cgImage: cgImage, size: .zero)
+            
+            let tempDir = FileManager.default.temporaryDirectory
+            let tempFile = tempDir.appendingPathComponent("aerowall-bg-\(UUID().uuidString).jpg")
+            
+            if let tiff = nsImage.tiffRepresentation,
+               let bitmap = NSBitmapImageRep(data: tiff),
+               let data = bitmap.representation(using: .jpeg, properties: [.compressionFactor: 0.8]) {
+                try data.write(to: tempFile)
+                try NSWorkspace.shared.setDesktopImageURL(tempFile, for: screen, options: [:])
+            }
+        } catch {
+            print("Failed to set desktop image: \(error)")
         }
     }
 }

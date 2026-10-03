@@ -18,7 +18,7 @@ class PauseController {
         ws.notificationCenter.addObserver(self, selector: #selector(sleepHandler), name: NSWorkspace.screensDidSleepNotification, object: nil)
         ws.notificationCenter.addObserver(self, selector: #selector(wakeHandler), name: NSWorkspace.screensDidWakeNotification, object: nil)
         
-        NotificationCenter.default.addObserver(self, selector: #selector(powerModeChanged), name: NSProcessInfo.powerStateDidChangeNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(powerModeChanged), name: Notification.Name("NSProcessInfoPowerStateDidChangeNotification"), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(thermalStateChanged), name: ProcessInfo.thermalStateDidChangeNotification, object: nil)
     }
     

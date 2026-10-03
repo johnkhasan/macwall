@@ -5,10 +5,11 @@ import AVFoundation
 class AppDelegate: NSObject, NSApplicationDelegate {
     
     func applicationDidFinishLaunching(_ notification: Notification) {
-        // Create a local video URL path in Documents for testing MVP
-        let homeDir = FileManager.default.homeDirectoryForCurrentUser
-        let testVideoURL = homeDir.appendingPathComponent("Documents/test.mp4")
-        
-        ScreenManager.shared.playVideo(at: testVideoURL)
+        if let lastVideoPath = UserDefaults.standard.string(forKey: "lastVideoPath") {
+            let url = URL(fileURLWithPath: lastVideoPath)
+            if FileManager.default.fileExists(atPath: url.path) {
+                ScreenManager.shared.playVideo(at: url)
+            }
+        }
     }
 }

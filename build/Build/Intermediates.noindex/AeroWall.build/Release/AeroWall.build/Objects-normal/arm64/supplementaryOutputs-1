@@ -1,0 +1,12 @@
+{
+  "/Users/javohirhasanov/Desktop/programming/macwall/AeroWall/App/AeroWallApp.swift" : {
+    "abi-baseline-json" : "/Users/javohirhasanov/Desktop/programming/macwall/build/Build/Intermediates.noindex/AeroWall.build/Release/AeroWall.build/Objects-normal/arm64/AeroWall.abi.json",
+    "const-values" : "/Users/javohirhasanov/Desktop/programming/macwall/build/Build/Intermediates.noindex/AeroWall.build/Release/AeroWall.build/Objects-normal/arm64/AeroWall-primary.swiftconstvalues",
+    "dependencies" : "/Users/javohirhasanov/Desktop/programming/macwall/build/Build/Intermediates.noindex/AeroWall.build/Release/AeroWall.build/Objects-normal/arm64/AeroWall-primary.d",
+    "diagnostics" : "/Users/javohirhasanov/Desktop/programming/macwall/build/Build/Intermediates.noindex/AeroWall.build/Release/AeroWall.build/Objects-normal/arm64/AeroWall-primary.dia",
+    "objc-header" : "/Users/javohirhasanov/Desktop/programming/macwall/build/Build/Intermediates.noindex/AeroWall.build/Release/AeroWall.build/Objects-normal/arm64/AeroWall-Swift.h",
+    "swiftdoc" : "/Users/javohirhasanov/Desktop/programming/macwall/build/Build/Intermediates.noindex/AeroWall.build/Release/AeroWall.build/Objects-normal/arm64/AeroWall.swiftdoc",
+    "swiftmodule" : "/Users/javohirhasanov/Desktop/programming/macwall/build/Build/Intermediates.noindex/AeroWall.build/Release/AeroWall.build/Objects-normal/arm64/AeroWall.swiftmodule",
+    "swiftsourceinfo" : "/Users/javohirhasanov/Desktop/programming/macwall/build/Build/Intermediates.noindex/AeroWall.build/Release/AeroWall.build/Objects-normal/arm64/AeroWall.swiftsourceinfo"
+  }
+}
