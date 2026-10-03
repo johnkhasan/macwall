@@ -28,12 +28,12 @@ MacWall funksiyalariga o'xshash, ochiq kodli (open source) jonli wallpaper ilova
 
 ## 0-bosqich: Tayyorgarlik (1 kun)
 
-- [ ] Xcode'da macOS App loyihasini ochish (deployment target: macOS 14)
-- [ ] `Info.plist` ga `LSUIElement = YES` qo'shish (Dock'da ko'rinmaydi, faqat menu bar)
-- [ ] App Sandbox'ni o'chirish
-- [ ] GitHub repo yaratish, litsenziya tanlash (MIT)
-- [ ] Ilovaga o'z nomini berish ("MacWall" nomi va logotipi ishlatilmaydi)
-- [ ] Repo ildiziga `CLAUDE.md` qo'shish: arxitektura, kod uslubi, "macOS 14+, sandbox yo'q" qoidalari
+- [x] Xcode'da macOS App loyihasini ochish (deployment target: macOS 14)
+- [x] `Info.plist` ga `LSUIElement = YES` qo'shish (Dock'da ko'rinmaydi, faqat menu bar)
+- [x] App Sandbox'ni o'chirish
+- [x] GitHub repo yaratish, litsenziya tanlash (MIT)
+- [x] Ilovaga o'z nomini berish ("MacWall" nomi va logotipi ishlatilmaydi)
+- [x] Repo ildiziga `CLAUDE.md` qo'shish: arxitektura, kod uslubi, "macOS 14+, sandbox yo'q" qoidalari
 
 ## 1-bosqich: MVP — bitta video, bitta monitor (2–3 kun)
 
@@ -55,9 +55,9 @@ let layer = AVPlayerLayer(player: player)
 layer.videoGravity = .resizeAspectFill
 ```
 
-- [ ] `WallpaperWindow` klassi (desktop level, barcha Space'larda)
-- [ ] `PlayerController` (uzluksiz loop, ovozsiz)
-- [ ] Qattiq kodlangan video yo'li bilan test
+- [x] `WallpaperWindow` klassi (desktop level, barcha Space'larda)
+- [x] `PlayerController` (uzluksiz loop, ovozsiz)
+- [x] Qattiq kodlangan video yo'li bilan test
 
 **Natija:** ilova ochilganda video desktop orqasida loop bo'lib aylanadi.
 
