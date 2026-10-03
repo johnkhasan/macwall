@@ -10,6 +10,7 @@ class ScreenManager {
     
     init() {
         NotificationCenter.default.addObserver(self, selector: #selector(handleScreenChange), name: NSApplication.didChangeScreenParametersNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(occlusionChanged), name: NSWindow.didChangeOcclusionStateNotification, object: nil)
     }
     
     func playVideo(at url: URL) {
@@ -26,6 +27,29 @@ class ScreenManager {
     
     @objc private func handleScreenChange() {
         updateWindows()
+    }
+    
+    @objc private func occlusionChanged(notification: Notification) {
+        var anyVisible = false
+        for window in windows.values {
+            if window.occlusionState.contains(.visible) {
+                anyVisible = true
+                break
+            }
+        }
+        if anyVisible {
+            player?.play()
+        } else {
+            player?.pause()
+        }
+    }
+    
+    func pause() {
+        player?.pause()
+    }
+    
+    func resume() {
+        player?.play()
     }
     
     private func updateWindows() {

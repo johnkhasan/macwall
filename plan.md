@@ -83,17 +83,17 @@ layer.videoGravity = .resizeAspectFill
 ## 3-bosqich: Aqlli pauza va optimizatsiya (3–5 kun)
 
 ### Pauza holatlari
-- [ ] Oyna yopilib qolganda: `NSWindow.didChangeOcclusionStateNotification` (to'liq ekranli ilovalar)
-- [ ] Ekran/tizim uxlaganda: `NSWorkspace.screensDidSleepNotification`, `willSleepNotification`
-- [ ] Batareyada ishlaganda: IOKit `IOPSCopyPowerSourcesInfo`
-- [ ] Low Power Mode: `ProcessInfo.isLowPowerModeEnabled`
-- [ ] Qizib ketganda: `ProcessInfo.thermalState`
-- [ ] Har bir holat sozlamalarda yoqib-o'chiriladigan bo'lsin
+- [x] Oyna yopilib qolganda: `NSWindow.didChangeOcclusionStateNotification` (to'liq ekranli ilovalar)
+- [x] Ekran/tizim uxlaganda: `NSWorkspace.screensDidSleepNotification`, `willSleepNotification`
+- [x] Batareyada ishlaganda: IOKit `IOPSCopyPowerSourcesInfo`
+- [x] Low Power Mode: `ProcessInfo.isLowPowerModeEnabled`
+- [x] Qizib ketganda: `ProcessInfo.thermalState`
+- [x] Har bir holat sozlamalarda yoqib-o'chiriladigan bo'lsin
 
 ### Optimizatsiya
-- [ ] Import paytida HEVC (H.265) ga avtomatik konvertatsiya: `AVAssetExportSession` (Apple Silicon'da apparat decode)
-- [ ] Videoni monitor o'lchamiga moslashtirish (ortiqcha 8K kerak emas)
-- [ ] Activity Monitor va Instruments bilan o'lchash
+- [x] Import paytida HEVC (H.265) ga avtomatik konvertatsiya: `AVAssetExportSession` (Apple Silicon'da apparat decode)
+- [x] Videoni monitor o'lchamiga moslashtirish (ortiqcha 8K kerak emas)
+- [x] Activity Monitor va Instruments bilan o'lchash
 
 **Maqsad:** video ijrosida CPU 2–5% dan oshmasin.
 
