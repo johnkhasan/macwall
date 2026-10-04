@@ -20,10 +20,30 @@ final class WallpaperWindow: NSWindow {
     private var parallaxEnabled = false
     private var parallaxOffset = CGPoint.zero
 
-    init(screen: NSScreen) {
-        let bounds = CGRect(origin: .zero, size: screen.frame.size)
+    /// Whether System Settings → Menu Bar → "Show menu bar background" is on. With it on,
+    /// macOS 26 turns the bar solid black over any window beneath it; with it off the bar is
+    /// fully transparent and the video can run underneath.
+    static var menuBarHasBackground: Bool {
+        let key = "SLSMenuBarUseBlurredAppearance" as CFString
+        CFPreferencesAppSynchronize(kCFPreferencesAnyApplication)
+        return CFPreferencesCopyAppValue(key, kCFPreferencesAnyApplication) as? Bool ?? false
+    }
+
+    /// The whole screen, or the screen minus the menu bar strip when the bar has a background
+    /// (it then shows the desktop picture, which `DesktopPictureSync` keeps in step with the video).
+    static func wallpaperFrame(for screen: NSScreen, menuBarHasBackground: Bool) -> NSRect {
+        guard menuBarHasBackground else { return screen.frame }
+        let menuBarInset = max(screen.frame.maxY - screen.visibleFrame.maxY, screen.safeAreaInsets.top)
+        var frame = screen.frame
+        frame.size.height -= menuBarInset
+        return frame
+    }
+
+    init(screen: NSScreen, menuBarHasBackground: Bool) {
+        let frame = Self.wallpaperFrame(for: screen, menuBarHasBackground: menuBarHasBackground)
+        let bounds = CGRect(origin: .zero, size: frame.size)
         effectsView = SKView(frame: bounds)
-        super.init(contentRect: screen.frame, styleMask: .borderless, backing: .buffered, defer: false)
+        super.init(contentRect: frame, styleMask: .borderless, backing: .buffered, defer: false)
 
         isReleasedWhenClosed = false
         level = NSWindow.Level(rawValue: Int(CGWindowLevelForKey(.desktopWindow)))
@@ -52,7 +72,7 @@ final class WallpaperWindow: NSWindow {
         root.addSubview(effectsView)
 
         contentView = root
-        setFrame(screen.frame, display: false)
+        setFrame(frame, display: false)
     }
 
     override var canBecomeKey: Bool { false }

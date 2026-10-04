@@ -58,6 +58,8 @@ final class ScreenManager: ObservableObject {
     private var slots: [CGDirectDisplayID: Slot] = [:]
     private var controllers: [URL: PlayerController] = [:]
     private var pointerTimer: Timer?
+    private var menuBarTimer: Timer?
+    private var menuBarHasBackground = WallpaperWindow.menuBarHasBackground
     private var cancellables = Set<AnyCancellable>()
 
     private let settings = AppSettings.shared
@@ -90,6 +92,21 @@ final class ScreenManager: ObservableObject {
         .sink { [weak self] in self?.reload() }
         .store(in: &cancellables)
 
+        // System Settings doesn't announce the menu bar background toggle, so poll it cheaply.
+        let timer = Timer(timeInterval: 2, repeats: true) { [weak self] _ in
+            MainActor.assumeIsolated { self?.checkMenuBarBackground() }
+        }
+        timer.tolerance = 1
+        RunLoop.main.add(timer, forMode: .common)
+        menuBarTimer = timer
+
+        reload()
+    }
+
+    private func checkMenuBarBackground() {
+        let current = WallpaperWindow.menuBarHasBackground
+        guard current != menuBarHasBackground else { return }
+        menuBarHasBackground = current
         reload()
     }
 
@@ -195,8 +212,9 @@ final class ScreenManager: ObservableObject {
             }
 
             var slot = slots[id] ?? makeSlot(for: screen, uuid: uuid)
-            if slot.window.frame != screen.frame {
-                slot.window.setFrame(screen.frame, display: true)
+            let frame = WallpaperWindow.wallpaperFrame(for: screen, menuBarHasBackground: menuBarHasBackground)
+            if slot.window.frame != frame {
+                slot.window.setFrame(frame, display: true)
             }
             if slot.url != url {
                 slot.window.show(player: controller(for: url).player, animated: slot.url != nil)
@@ -233,7 +251,7 @@ final class ScreenManager: ObservableObject {
     }
 
     private func makeSlot(for screen: NSScreen, uuid: String) -> Slot {
-        let window = WallpaperWindow(screen: screen)
+        let window = WallpaperWindow(screen: screen, menuBarHasBackground: menuBarHasBackground)
         window.orderFront(nil)
         return Slot(window: window, uuid: uuid)
     }

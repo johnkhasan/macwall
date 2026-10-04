@@ -1,4 +1,5 @@
 import AppKit
+import AVFoundation
 
 /// Sets a still frame of the live wallpaper as the macOS desktop picture, so the lock screen,
 /// login window and Mission Control (which never show our window) match the video.
@@ -18,7 +19,11 @@ final class DesktopPictureSync {
     func update(displayUUID: String, video: URL) {
         tasks[displayUUID]?.cancel()
         tasks[displayUUID] = Task { [directory] in
-            guard let frame = await ThumbnailGenerator.frame(for: video, at: 0, maxSize: nil),
+            // Many clips open on a black fade-in; a frame a quarter in represents the video better
+            // and is what the translucent menu bar shows on top of.
+            let duration = (try? await AVURLAsset(url: video).load(.duration).seconds) ?? 0
+            let time = duration.isFinite && duration > 0 ? duration * 0.25 : 0
+            guard let frame = await ThumbnailGenerator.frame(for: video, at: time, maxSize: nil),
                   !Task.isCancelled else { return }
 
             // macOS caches pictures by URL, so every snapshot needs a fresh file name.
