@@ -1,6 +1,7 @@
 #!/bin/bash
 # Builds AeroWall (Release) and packages it into a drag-to-Applications DMG.
-# Usage: scripts/make-dmg.sh            → dist/AeroWall-<version>.dmg
+# Usage: scripts/make-dmg.sh            → dist/AeroWall-<version>.dmg and dist/AeroWall.dmg
+# Optional env: VERSION=1.2.0 BUILD_NUMBER=42 override the version from project.yml (used by CI).
 set -euo pipefail
 
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
@@ -11,6 +12,13 @@ cd "$ROOT"
 
 if command -v xcodegen >/dev/null; then
     xcodegen generate --quiet
+fi
+
+if [ -n "${VERSION:-}" ]; then
+    /usr/libexec/PlistBuddy -c "Set :CFBundleShortVersionString $VERSION" AeroWall/Info.plist
+fi
+if [ -n "${BUILD_NUMBER:-}" ]; then
+    /usr/libexec/PlistBuddy -c "Set :CFBundleVersion $BUILD_NUMBER" AeroWall/Info.plist
 fi
 
 echo "▸ Building AeroWall (Release)…"
@@ -35,5 +43,8 @@ DMG="$DIST/AeroWall-$VERSION.dmg"
 rm -f "$DMG"
 echo "▸ Creating ${DMG}…"
 "$VENV/bin/dmgbuild" -s scripts/dmg/settings.py -D app="$APP" -D background="$BACKGROUND" "AeroWall" "$DMG"
+
+# Stable name so releases/latest/download/AeroWall.dmg always works.
+cp "$DMG" "$DIST/AeroWall.dmg"
 
 echo "✓ ${DMG}"
