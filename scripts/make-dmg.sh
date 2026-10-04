@@ -1,0 +1,39 @@
+#!/bin/bash
+# Builds AeroWall (Release) and packages it into a drag-to-Applications DMG.
+# Usage: scripts/make-dmg.sh            → dist/AeroWall-<version>.dmg
+set -euo pipefail
+
+ROOT="$(cd "$(dirname "$0")/.." && pwd)"
+BUILD="$ROOT/build"
+DIST="$ROOT/dist"
+VENV="$BUILD/dmg-venv"
+cd "$ROOT"
+
+if command -v xcodegen >/dev/null; then
+    xcodegen generate --quiet
+fi
+
+echo "▸ Building AeroWall (Release)…"
+xcodebuild -project AeroWall.xcodeproj -scheme AeroWall -configuration Release \
+    -destination "generic/platform=macOS" -derivedDataPath "$BUILD/DerivedData" build -quiet
+APP="$BUILD/DerivedData/Build/Products/Release/AeroWall.app"
+VERSION=$(/usr/libexec/PlistBuddy -c "Print CFBundleShortVersionString" "$APP/Contents/Info.plist")
+
+if [ ! -x "$VENV/bin/dmgbuild" ]; then
+    echo "▸ Installing dmgbuild…"
+    python3 -m venv "$VENV"
+    "$VENV/bin/pip" install --quiet --disable-pip-version-check dmgbuild Pillow
+fi
+
+echo "▸ Drawing installer background…"
+"$VENV/bin/python" scripts/dmg/generate_background.py
+BACKGROUND="$BUILD/dmg-background.tiff"
+tiffutil -cathidpicheck scripts/dmg/background.png scripts/dmg/background@2x.png -out "$BACKGROUND" 2>/dev/null
+
+mkdir -p "$DIST"
+DMG="$DIST/AeroWall-$VERSION.dmg"
+rm -f "$DMG"
+echo "▸ Creating ${DMG}…"
+"$VENV/bin/dmgbuild" -s scripts/dmg/settings.py -D app="$APP" -D background="$BACKGROUND" "AeroWall" "$DMG"
+
+echo "✓ ${DMG}"

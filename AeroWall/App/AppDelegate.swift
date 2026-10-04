@@ -1,15 +1,29 @@
 import Cocoa
-import SwiftUI
-import AVFoundation
 
-class AppDelegate: NSObject, NSApplicationDelegate {
-    
+@MainActor
+final class AppDelegate: NSObject, NSApplicationDelegate {
     func applicationDidFinishLaunching(_ notification: Notification) {
-        if let lastVideoPath = UserDefaults.standard.string(forKey: "lastVideoPath") {
-            let url = URL(fileURLWithPath: lastVideoPath)
-            if FileManager.default.fileExists(atPath: url.path) {
-                ScreenManager.shared.playVideo(at: url)
+        AppearanceObserver.shared.start()
+        PlaylistManager.shared.start()
+        WeatherService.shared.start()
+        ScreenManager.shared.start()
+        PauseController.shared.start()
+
+        let settings = AppSettings.shared
+        if settings.hasLaunchedBefore {
+            // Later launches (e.g. at login) stay quietly in the menu bar.
+            DispatchQueue.main.async {
+                for window in NSApp.windows where window.identifier?.rawValue.hasPrefix(AeroWallApp.mainWindowID) == true {
+                    window.close()
+                }
             }
+        } else {
+            settings.hasLaunchedBefore = true
+            NSApp.activate()
         }
+    }
+
+    func applicationShouldTerminateAfterLastWindowClosed(_ sender: NSApplication) -> Bool {
+        false
     }
 }

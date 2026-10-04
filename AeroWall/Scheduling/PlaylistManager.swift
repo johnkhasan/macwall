@@ -1,41 +1,83 @@
-import AppKit
+import Foundation
+import Combine
 
-class PlaylistManager {
+/// Advances through `AppSettings.playlist` on a timer. `ScreenManager` reads `index`
+/// to decide which video each display shows.
+@MainActor
+final class PlaylistManager: ObservableObject {
     static let shared = PlaylistManager()
-    
-    var playlist: [URL] = []
-    var currentIndex = 0
-    var interval: TimeInterval = 3600 // 1 hour
+
+    private static let indexKey = "playlistIndex"
+
+    @Published private(set) var index: Int
+    @Published private(set) var nextChange: Date?
+
+    private let settings = AppSettings.shared
     private var timer: Timer?
-    
+    private var scheduledInterval: TimeInterval?
+    private var cancellables = Set<AnyCancellable>()
+
+    private init() {
+        index = UserDefaults.standard.integer(forKey: Self.indexKey)
+    }
+
     func start() {
-        timer?.invalidate()
-        timer = Timer.scheduledTimer(withTimeInterval: interval, repeats: true) { [weak self] _ in
-            self?.nextVideo()
-        }
+        guard cancellables.isEmpty else { return }
+        settings.objectWillChange
+            .debounce(for: .milliseconds(100), scheduler: DispatchQueue.main)
+            .sink { [weak self] in self?.reschedule() }
+            .store(in: &cancellables)
+        reschedule()
     }
-    
-    func nextVideo() {
-        guard !playlist.isEmpty else { return }
-        currentIndex = (currentIndex + 1) % playlist.count
-        let nextURL = playlist[currentIndex]
-        
-        ScreenManager.shared.playVideo(at: nextURL)
-        updateLockScreen(with: nextURL)
+
+    var isActive: Bool {
+        settings.playlistEnabled && settings.playlist.count > 1
     }
-    
-    func updateLockScreen(with url: URL) {
-        Task {
-            if let image = await VideoImporter.shared.generateThumbnail(for: url) {
-                let tempURL = FileManager.default.temporaryDirectory.appendingPathComponent("lockscreen.png")
-                if let tiffData = image.tiffRepresentation, let bitmap = NSBitmapImageRep(data: tiffData), let pngData = bitmap.representation(using: .png, properties: [:]) {
-                    try? pngData.write(to: tempURL)
-                    
-                    if let screen = NSScreen.main {
-                        try? NSWorkspace.shared.setDesktopImageURL(tempURL, for: screen, options: [:])
-                    }
-                }
+
+    func advance() {
+        let count = settings.playlist.count
+        guard count > 1 else { return }
+        if settings.playlistShuffle {
+            var next = index % count
+            while next == index % count {
+                next = Int.random(in: 0..<count)
             }
+            setIndex(next)
+        } else {
+            setIndex((index + 1) % count)
         }
+        restartTimer()
+    }
+
+    func jump(to newIndex: Int) {
+        setIndex(newIndex)
+        restartTimer()
+    }
+
+    private func setIndex(_ newIndex: Int) {
+        index = newIndex
+        UserDefaults.standard.set(newIndex, forKey: Self.indexKey)
+    }
+
+    private func reschedule() {
+        let desired = isActive ? settings.playlistInterval : nil
+        guard desired != scheduledInterval else { return }
+        restartTimer()
+    }
+
+    private func restartTimer() {
+        timer?.invalidate()
+        timer = nil
+        nextChange = nil
+        scheduledInterval = isActive ? settings.playlistInterval : nil
+        guard let interval = scheduledInterval, interval > 0 else { return }
+
+        let timer = Timer(timeInterval: interval, repeats: true) { [weak self] _ in
+            MainActor.assumeIsolated { self?.advance() }
+        }
+        timer.tolerance = min(interval * 0.05, 30)
+        RunLoop.main.add(timer, forMode: .common)
+        self.timer = timer
+        nextChange = Date().addingTimeInterval(interval)
     }
 }

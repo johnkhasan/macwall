@@ -1,21 +1,29 @@
 import AppKit
 
-class AppearanceObserver: NSObject {
+/// Publishes whether the system is in Dark Mode, for light/dark wallpaper switching.
+@MainActor
+final class AppearanceObserver: ObservableObject {
     static let shared = AppearanceObserver()
-    private var observerContext = 0
-    
-    func startObserving() {
-        NSApp.addObserver(self, forKeyPath: "effectiveAppearance", options: [.new, .initial], context: &observerContext)
-    }
-    
-    override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
-        if keyPath == "effectiveAppearance" {
-            let isDark = NSApp.effectiveAppearance.name == .darkAqua || NSApp.effectiveAppearance.name == .vibrantDark
-            print("Appearance changed: isDark = \(isDark)")
+
+    @Published private(set) var isDark = false
+    private var observation: NSKeyValueObservation?
+
+    private init() {}
+
+    func start() {
+        guard observation == nil else { return }
+        isDark = Self.isDark(NSApp.effectiveAppearance)
+        observation = NSApp.observe(\.effectiveAppearance, options: [.new]) { app, _ in
+            let dark = Self.isDark(app.effectiveAppearance)
+            Task { @MainActor in
+                if AppearanceObserver.shared.isDark != dark {
+                    AppearanceObserver.shared.isDark = dark
+                }
+            }
         }
     }
-    
-    deinit {
-        NSApp.removeObserver(self, forKeyPath: "effectiveAppearance", context: &observerContext)
+
+    private nonisolated static func isDark(_ appearance: NSAppearance) -> Bool {
+        appearance.bestMatch(from: [.aqua, .darkAqua]) == .darkAqua
     }
 }
