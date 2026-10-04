@@ -1,4 +1,5 @@
 import AppKit
+import ImageIO
 
 /// One entry of the macwall.app catalog. Only the fields AeroWall uses are decoded;
 /// the API is undocumented, so everything not essential is optional.
@@ -141,13 +142,37 @@ enum CatalogClient {
 
     // MARK: Thumbnails
 
-    @MainActor private static let imageCache = NSCache<NSURL, NSImage>()
+    // NSCache is thread-safe, so the grid (main) and the decode task (background) share it directly.
+    private static let imageCache: NSCache<NSURL, NSImage> = {
+        let cache = NSCache<NSURL, NSImage>()
+        cache.countLimit = 400
+        return cache
+    }()
 
-    @MainActor
-    static func image(at url: URL) async -> NSImage? {
+    /// Fetches a thumbnail and decodes it downsampled off the main thread. Full-size JPEGs decoded
+    /// on the main thread during a scroll starve the desktop wallpaper player and make it stutter;
+    /// a small, already-decoded bitmap draws almost for free.
+    static func image(at url: URL, maxPixel: CGFloat = 700) async -> NSImage? {
         if let cached = imageCache.object(forKey: url as NSURL) { return cached }
-        guard let data = try? await load(URLRequest(url: url)), let image = NSImage(data: data) else { return nil }
+        guard let data = try? await load(URLRequest(url: url)),
+              let image = await decodeDownsampled(data, maxPixel: maxPixel) else { return nil }
         imageCache.setObject(image, forKey: url as NSURL)
         return image
+    }
+
+    private static func decodeDownsampled(_ data: Data, maxPixel: CGFloat) async -> NSImage? {
+        await Task.detached(priority: .utility) {
+            let options: [CFString: Any] = [
+                kCGImageSourceCreateThumbnailFromImageAlways: true,
+                kCGImageSourceCreateThumbnailWithTransform: true,
+                kCGImageSourceShouldCacheImmediately: true,          // decode now, on this background thread
+                kCGImageSourceThumbnailMaxPixelSize: maxPixel,
+            ]
+            guard let source = CGImageSourceCreateWithData(data as CFData, nil),
+                  let cgImage = CGImageSourceCreateThumbnailAtIndex(source, 0, options as CFDictionary) else {
+                return nil
+            }
+            return NSImage(cgImage: cgImage, size: NSSize(width: cgImage.width, height: cgImage.height))
+        }.value
     }
 }

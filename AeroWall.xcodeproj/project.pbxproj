@@ -25,6 +25,7 @@
 		A65FA4D22779910441C5C792 /* LibraryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D0A43D96ADA73842ED89FBD /* LibraryView.swift */; };
 		B49570C70681CFFF075926F8 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 832EB5CA6E7657F2C2680FA0 /* AppDelegate.swift */; };
 		B79FDD3A3232DDD82D9C94CC /* AppearanceObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41EF84752CA93D042F59E046 /* AppearanceObserver.swift */; };
+		BB9551BBA169E23FF45AED76 /* CatalogPreviewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 733FFCAB0F3A486B36113877 /* CatalogPreviewController.swift */; };
 		C3D18041E94ED575954898AA /* PlayerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6EAAF94A3977D14B9A40A77 /* PlayerController.swift */; };
 		D81C18FC6E52D57220907F03 /* WallpaperWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47C2C5667CBDCD79B654071E /* WallpaperWindow.swift */; };
 		E4CDBCF799E74E591663F041 /* ParticleScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 222FEA3695677EFC676A6BC3 /* ParticleScene.swift */; };
@@ -46,6 +47,7 @@
 		5C4106F913EF49B283EDA7AC /* DesktopPictureSync.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DesktopPictureSync.swift; sourceTree = "<group>"; };
 		6152CCD96509CA669953A3D3 /* CatalogDownloader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CatalogDownloader.swift; sourceTree = "<group>"; };
 		65B73C2677F75E378318C633 /* HEVCConverter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HEVCConverter.swift; sourceTree = "<group>"; };
+		733FFCAB0F3A486B36113877 /* CatalogPreviewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CatalogPreviewController.swift; sourceTree = "<group>"; };
 		832EB5CA6E7657F2C2680FA0 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		9D0A43D96ADA73842ED89FBD /* LibraryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryView.swift; sourceTree = "<group>"; };
 		AE97BB186DB6B36750B15773 /* VideoLibrary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoLibrary.swift; sourceTree = "<group>"; };
@@ -156,6 +158,7 @@
 		DE6E3041B1105E0EEA7894FA /* Settings */ = {
 			isa = PBXGroup;
 			children = (
+				733FFCAB0F3A486B36113877 /* CatalogPreviewController.swift */,
 				3338D8041174ED0D91394C07 /* CatalogView.swift */,
 				D1D4791AC151A2F1199AB5A9 /* Components.swift */,
 				9D0A43D96ADA73842ED89FBD /* LibraryView.swift */,
@@ -240,6 +243,7 @@
 				B79FDD3A3232DDD82D9C94CC /* AppearanceObserver.swift in Sources */,
 				7C1EC3227AE79A68EF2A733A /* CatalogClient.swift in Sources */,
 				0ACAE39AA68E60C4762990F4 /* CatalogDownloader.swift in Sources */,
+				BB9551BBA169E23FF45AED76 /* CatalogPreviewController.swift in Sources */,
 				0D8B47EF990F2626F711F9D1 /* CatalogView.swift in Sources */,
 				5B3ABD7940DF76F9D7B4ED3F /* Components.swift in Sources */,
 				0676B344565BB7E709BCB269 /* DesktopPictureSync.swift in Sources */,

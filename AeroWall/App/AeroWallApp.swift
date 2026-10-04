@@ -42,6 +42,10 @@ struct MenuBarPanel: View {
                             }
                         }
                     }
+                    // Pin the strip to the panel's inner width. Without this the horizontal
+                    // ScrollView reports its full content width and MenuBarExtra(.window) grows
+                    // the popover past `panelWidth`, clipping the content on both sides.
+                    .frame(width: Self.panelWidth - 28)
                 }
             }
 
@@ -87,14 +91,18 @@ struct MenuBarPanel: View {
             .font(.system(size: 12))
         }
         .padding(14)
-        .frame(width: 320)
+        .frame(width: Self.panelWidth)
     }
+
+    static let panelWidth: CGFloat = 320
 
     private var nowPlaying: some View {
         ZStack(alignment: .bottomLeading) {
+            // A hard width (not maxWidth:.infinity): a wide thumbnail must be clipped to the panel,
+            // never allowed to stretch MenuBarExtra(.window) wider than `panelWidth`.
             VideoThumbnail(url: screens.primaryURL)
-                .frame(height: 150)
-                .frame(maxWidth: .infinity)
+                .frame(width: Self.panelWidth - 28, height: 150)
+                .clipped()
             LinearGradient(colors: [.clear, .black.opacity(0.75)], startPoint: .center, endPoint: .bottom)
             HStack(alignment: .bottom) {
                 VStack(alignment: .leading, spacing: 3) {
@@ -111,6 +119,10 @@ struct MenuBarPanel: View {
                 Spacer()
                 if !screens.activeURLs.isEmpty {
                     HStack(spacing: 6) {
+                        CircleIconButton(systemName: settings.muteAudio ? "speaker.slash.fill" : "speaker.wave.2.fill",
+                                         help: settings.muteAudio ? "Unmute" : "Mute") {
+                            settings.muteAudio.toggle()
+                        }
                         if screens.canShowNext {
                             CircleIconButton(systemName: "forward.fill", help: "Next wallpaper") {
                                 screens.showNext()

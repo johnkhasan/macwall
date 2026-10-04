@@ -1,5 +1,4 @@
 import SwiftUI
-import AVKit
 
 /// Browses the macwall.app online catalog and saves wallpapers into the local library.
 struct CatalogView: View {
@@ -19,7 +18,6 @@ struct CatalogView: View {
     @State private var isLoading = false
     @State private var loadError: String?
     @State private var hoveredID: String?
-    @State private var previewing: CatalogWallpaper?
 
     private let columns = [GridItem(.adaptive(minimum: 210, maximum: 300), spacing: 22)]
 
@@ -68,9 +66,6 @@ struct CatalogView: View {
                 guard !Task.isCancelled else { return }
             }
             await reload()
-        }
-        .sheet(item: $previewing) { wallpaper in
-            CatalogPreviewSheet(wallpaper: wallpaper)
         }
         .alert("Download failed", isPresented: Binding(
             get: { downloader.lastError != nil },
@@ -131,7 +126,7 @@ struct CatalogView: View {
             isSaved: localItem != nil,
             isPlaying: localItem.map { screens.activeURLs.contains($0.url) } ?? false,
             hoveredID: $hoveredID,
-            onPreview: { previewing = wallpaper },
+            onPreview: { CatalogPreviewController.shared.show(url: wallpaper.videoUrl, title: wallpaper.name) },
             onDownload: { downloader.download(wallpaper, setAsWallpaper: false) },
             onSet: { downloader.download(wallpaper, setAsWallpaper: true) },
             onCancel: { downloader.cancel(wallpaper) }
@@ -374,61 +369,3 @@ private struct CatalogCardView: View {
 
 // MARK: - Preview
 
-/// Streams the light 1280 px preview; nothing is saved until the user asks for it.
-private struct CatalogPreviewSheet: View {
-    let wallpaper: CatalogWallpaper
-
-    @ObservedObject private var downloader = CatalogDownloader.shared
-    @ObservedObject private var library = VideoLibrary.shared
-    @Environment(\.dismiss) private var dismiss
-    @State private var player = AVQueuePlayer()
-    @State private var looper: AVPlayerLooper?
-
-    var body: some View {
-        let download = downloader.active[wallpaper.id]
-        let isSaved = downloader.localItem(for: wallpaper) != nil
-        VStack(spacing: 0) {
-            VideoPlayer(player: player)
-                .aspectRatio(16 / 9, contentMode: .fit)
-                .background(.black)
-            HStack(spacing: 12) {
-                VStack(alignment: .leading, spacing: 2) {
-                    Text(wallpaper.name).font(.headline).lineLimit(1)
-                    Text("\(wallpaper.category) · Preview quality, the download is the original file")
-                        .font(.caption)
-                        .foregroundStyle(.secondary)
-                }
-                Spacer()
-                if let download {
-                    ProgressView(value: download.progress)
-                        .frame(width: 120)
-                    Text(download.isOptimizing ? "Optimizing…" : "\(Int(download.progress * 100))%")
-                        .font(.caption.monospacedDigit())
-                        .foregroundStyle(.secondary)
-                } else if !isSaved {
-                    Button("Download") { downloader.download(wallpaper, setAsWallpaper: false) }
-                }
-                Button(isSaved ? "Set as Wallpaper" : "Download & Set") {
-                    downloader.download(wallpaper, setAsWallpaper: true)
-                    dismiss()
-                }
-                .buttonStyle(.borderedProminent)
-                .disabled(download != nil)
-                Button("Close") { dismiss() }
-                    .keyboardShortcut(.cancelAction)
-            }
-            .padding(16)
-        }
-        .frame(width: 760)
-        .onAppear {
-            player.isMuted = true
-            looper = AVPlayerLooper(player: player, templateItem: AVPlayerItem(url: wallpaper.videoUrl))
-            player.play()
-        }
-        .onDisappear {
-            player.pause()
-            looper = nil
-            player.removeAllItems()
-        }
-    }
-}
