@@ -23,19 +23,37 @@ enum SidebarItem: String, CaseIterable, Identifiable {
         case .about: return "info.circle.fill"
         }
     }
+
+    var color: Color {
+        switch self {
+        case .library: return .blue
+        case .displays: return .indigo
+        case .schedule: return .orange
+        case .effects: return .purple
+        case .energy: return .green
+        case .general: return .gray
+        case .about: return .pink
+        }
+    }
 }
 
 struct SettingsView: View {
-    @State private var selection: SidebarItem = .library
+    @AppStorage("settingsPane") private var selection: SidebarItem = .library
 
     var body: some View {
         NavigationSplitView {
             List(SidebarItem.allCases, selection: $selection) { item in
                 NavigationLink(value: item) {
-                    Label(item.rawValue, systemImage: item.icon)
-                        .padding(.vertical, 6)
-                        .font(.system(size: 14, weight: .medium))
+                    Label {
+                        Text(item.rawValue)
+                    } icon: {
+                        SettingsIcon(systemName: item.icon, color: item.color)
+                    }
+                    .padding(.vertical, 3)
                 }
+            }
+            .safeAreaInset(edge: .bottom) {
+                SidebarNowPlaying()
             }
             .navigationTitle("AeroWall")
             .navigationSplitViewColumnWidth(min: 200, ideal: 230, max: 280)
@@ -99,6 +117,15 @@ struct DisplaySettingsView: View {
 
     var body: some View {
         Form {
+            if !screens.displays.isEmpty {
+                Section {
+                    ViewThatFits(in: .horizontal) {
+                        displayRow
+                        ScrollView(.horizontal, showsIndicators: false) { displayRow }
+                    }
+                }
+            }
+
             Section {
                 Toggle("Show the same wallpaper on every display", isOn: $settings.sameOnAllDisplays)
                 Picker("Scaling", selection: $settings.videoScaling) {
@@ -158,6 +185,58 @@ struct DisplaySettingsView: View {
         }
         .formStyle(.grouped)
         .navigationTitle(SidebarItem.displays.rawValue)
+    }
+
+    private var displayRow: some View {
+        HStack(alignment: .top, spacing: 28) {
+            ForEach(screens.displays) { display in
+                DisplayPreview(display: display, url: screens.displayURLs[display.id])
+            }
+        }
+        .padding(.vertical, 10)
+        .frame(maxWidth: .infinity)
+    }
+}
+
+private struct DisplayPreview: View {
+    let display: DisplayInfo
+    let url: URL?
+
+    var body: some View {
+        VStack(spacing: 0) {
+            VideoThumbnail(url: url)
+                .frame(width: 200, height: 125)
+                .clipShape(RoundedRectangle(cornerRadius: 6, style: .continuous))
+                .padding(5)
+                .background(RoundedRectangle(cornerRadius: 10, style: .continuous).fill(Color(white: 0.1)))
+            // Monitor stand.
+            Rectangle()
+                .fill(Color(white: 0.45).gradient)
+                .frame(width: 36, height: 14)
+            Capsule()
+                .fill(Color(white: 0.5))
+                .frame(width: 80, height: 5)
+            HStack(spacing: 6) {
+                Text(display.name)
+                    .font(.system(size: 12, weight: .semibold))
+                    .lineLimit(1)
+                if display.isMain {
+                    Text("MAIN")
+                        .font(.system(size: 9, weight: .bold))
+                        .padding(.horizontal, 5)
+                        .padding(.vertical, 2)
+                        .background(Capsule().fill(Color.accentColor.opacity(0.2)))
+                        .foregroundStyle(Color.accentColor)
+                }
+            }
+            .padding(.top, 10)
+            Text(url?.deletingPathExtension().lastPathComponent ?? "System wallpaper")
+                .font(.system(size: 11))
+                .foregroundStyle(.secondary)
+                .lineLimit(1)
+                .truncationMode(.middle)
+                .frame(maxWidth: 200)
+        }
     }
 }
 
@@ -267,13 +346,14 @@ struct EffectsSettingsView: View {
     var body: some View {
         Form {
             Section {
-                Picker("Current Effect", selection: $settings.effect) {
+                LazyVGrid(columns: [GridItem(.adaptive(minimum: 104), spacing: 14)], spacing: 14) {
                     ForEach(OverlayEffect.allCases) { effect in
-                        Label(effect.title, systemImage: effect.icon).tag(effect)
+                        EffectTile(effect: effect, isSelected: settings.effect == effect) {
+                            withAnimation(.easeInOut(duration: 0.15)) { settings.effect = effect }
+                        }
                     }
                 }
-                .pickerStyle(.radioGroup)
-                .labelsHidden()
+                .padding(.vertical, 6)
             } header: {
                 SectionHeader(title: "Interactive Overlays")
             } footer: {

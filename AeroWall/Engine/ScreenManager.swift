@@ -43,6 +43,10 @@ final class ScreenManager: ObservableObject {
     @Published private(set) var systemPauseReasons: Set<PauseReason> = []
     @Published private(set) var displays: [DisplayInfo] = []
     @Published private(set) var activeURLs: Set<URL> = []
+    /// Display UUID → video it shows.
+    @Published private(set) var displayURLs: [String: URL] = [:]
+    /// The video on the main display (the one with the menu bar).
+    @Published private(set) var primaryURL: URL?
 
     private struct Slot {
         let window: WallpaperWindow
@@ -133,6 +137,22 @@ final class ScreenManager: ObservableObject {
         reload()
     }
 
+    /// Next playlist item, or the next video in the library when no playlist is running.
+    func showNext() {
+        if PlaylistManager.shared.isActive {
+            PlaylistManager.shared.advance()
+            return
+        }
+        let videos = library.videos
+        guard !videos.isEmpty else { return }
+        let current = videos.firstIndex { $0.url == primaryURL } ?? -1
+        setWallpaper(videos[(current + 1) % videos.count])
+    }
+
+    var canShowNext: Bool {
+        PlaylistManager.shared.isActive || library.videos.count > 1
+    }
+
     // MARK: Resolution
 
     private func resolveWallpaper(displayUUID: String, index: Int) -> URL? {
@@ -203,6 +223,13 @@ final class ScreenManager: ObservableObject {
 
         let urls = Set(slots.values.compactMap(\.url))
         if urls != activeURLs { activeURLs = urls }
+        var byDisplay: [String: URL] = [:]
+        for slot in slots.values {
+            byDisplay[slot.uuid] = slot.url
+        }
+        if byDisplay != displayURLs { displayURLs = byDisplay }
+        let primary = screens.first?.displayID.flatMap { slots[$0]?.url } ?? slots.values.first?.url
+        if primary != primaryURL { primaryURL = primary }
     }
 
     private func makeSlot(for screen: NSScreen, uuid: String) -> Slot {

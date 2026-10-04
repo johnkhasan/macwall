@@ -10,8 +10,15 @@ struct LibraryView: View {
     @State private var renaming: VideoItem?
     @State private var renameText = ""
     @State private var deleting: VideoItem?
+    @State private var searchText = ""
 
-    private let columns = [GridItem(.adaptive(minimum: 200, maximum: 260), spacing: 24)]
+    private let columns = [GridItem(.adaptive(minimum: 210, maximum: 300), spacing: 22)]
+
+    private var filteredVideos: [VideoItem] {
+        let query = searchText.trimmingCharacters(in: .whitespaces)
+        guard !query.isEmpty else { return library.videos }
+        return library.videos.filter { $0.title.localizedCaseInsensitiveContains(query) }
+    }
 
     var body: some View {
         VStack(spacing: 0) {
@@ -19,8 +26,15 @@ struct LibraryView: View {
                 ImportProgressView(jobs: library.importJobs)
             }
             ScrollView {
-                LazyVGrid(columns: columns, spacing: 24) {
-                    ForEach(library.videos) { video in
+                VStack(alignment: .leading, spacing: 26) {
+                    if searchText.isEmpty {
+                        NowPlayingBanner()
+                    }
+                    if !library.videos.isEmpty {
+                        libraryHeader
+                    }
+                LazyVGrid(columns: columns, spacing: 26) {
+                    ForEach(filteredVideos) { video in
                         VideoCardView(
                             video: video,
                             isPlaying: screens.activeURLs.contains(video.url),
@@ -34,7 +48,8 @@ struct LibraryView: View {
                         .contextMenu { menuItems(for: video) }
                     }
                 }
-                .padding(30)
+                }
+                .padding(28)
             }
             .background(Color(NSColor.underPageBackgroundColor))
             .dropDestination(for: URL.self) { items, _ in
@@ -46,6 +61,7 @@ struct LibraryView: View {
             .overlay { overlay }
         }
         .navigationTitle("Wallpaper Library")
+        .searchable(text: $searchText, placement: .toolbar, prompt: "Search wallpapers")
         .toolbar {
             ToolbarItem(placement: .primaryAction) {
                 Button(action: openFilePanel) {
@@ -80,6 +96,20 @@ struct LibraryView: View {
             Button("OK", role: .cancel) {}
         } message: {
             Text(library.lastError ?? "")
+        }
+    }
+
+    private var libraryHeader: some View {
+        HStack(alignment: .firstTextBaseline, spacing: 10) {
+            Text("Library")
+                .font(.system(size: 22, weight: .bold))
+            Text(searchText.isEmpty ? "\(library.videos.count) videos" : "\(filteredVideos.count) of \(library.videos.count)")
+                .font(.system(size: 13))
+                .foregroundStyle(.secondary)
+            Spacer()
+            Text("Double-click to set · Right-click for more")
+                .font(.system(size: 11))
+                .foregroundStyle(.tertiary)
         }
     }
 
@@ -208,104 +238,97 @@ struct VideoCardView<MenuItems: View>: View {
     let onPlay: () -> Void
     @ViewBuilder let menuItems: () -> MenuItems
 
-    @State private var thumbnail: NSImage?
     @State private var metadata: VideoMetadata?
 
     private var isHovered: Bool { hoveredURL == video.url }
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 10) {
-            ZStack {
-                if let thumbnail {
-                    Image(nsImage: thumbnail)
-                        .resizable()
-                        .aspectRatio(contentMode: .fill)
-                        .frame(height: 140)
-                        .frame(maxWidth: .infinity)
-                        .clipped()
-                } else {
-                    Rectangle()
-                        .fill(Color(NSColor.controlBackgroundColor))
-                        .frame(height: 140)
-                        .overlay(ProgressView().controlSize(.small))
+        VStack(alignment: .leading, spacing: 9) {
+            Color.clear
+                .aspectRatio(16 / 9, contentMode: .fit)
+                .overlay(VideoThumbnail(url: video.url))
+                .overlay {
+                    if isHovered {
+                        Color.black.opacity(0.3)
+                    }
                 }
-
-                if isHovered {
-                    Color.black.opacity(0.35)
-                }
-
-                VStack {
+                .overlay(alignment: .topLeading) {
                     HStack(spacing: 4) {
                         ForEach(badges, id: \.self) { badge in
                             Image(systemName: badge)
                                 .font(.system(size: 10, weight: .bold))
-                                .foregroundColor(.white)
-                                .padding(5)
-                                .background(Circle().fill(.black.opacity(0.55)))
-                        }
-                        Spacer()
-                        if isHovered {
-                            Menu {
-                                menuItems()
-                            } label: {
-                                Image(systemName: "ellipsis.circle.fill")
-                                    .font(.system(size: 22))
-                                    .symbolRenderingMode(.palette)
-                                    .foregroundStyle(.black.opacity(0.75), .white)
-                            }
-                            .menuStyle(.borderlessButton)
-                            .menuIndicator(.hidden)
-                            .fixedSize()
+                                .foregroundStyle(.white)
+                                .frame(width: 22, height: 22)
+                                .background(.ultraThinMaterial, in: Circle())
                         }
                     }
-                    Spacer()
-                    HStack {
-                        if let metadata {
-                            Text("\(metadata.resolutionLabel) · \(metadata.durationLabel)")
-                                .font(.system(size: 10, weight: .semibold, design: .rounded))
-                                .foregroundColor(.white)
-                                .padding(.horizontal, 6)
-                                .padding(.vertical, 3)
-                                .background(Capsule().fill(.black.opacity(0.55)))
+                    .padding(8)
+                }
+                .overlay(alignment: .topTrailing) {
+                    if isHovered {
+                        Menu {
+                            menuItems()
+                        } label: {
+                            Image(systemName: "ellipsis")
+                                .font(.system(size: 12, weight: .bold))
+                                .foregroundStyle(.white)
+                                .frame(width: 26, height: 26)
+                                .background(.ultraThinMaterial, in: Circle())
                         }
-                        Spacer()
-                        if isPlaying {
-                            Image(systemName: "checkmark.circle.fill")
-                                .font(.system(size: 22))
-                                .foregroundColor(.green)
-                                .background(Circle().fill(Color.white))
-                        }
+                        .menuStyle(.borderlessButton)
+                        .menuIndicator(.hidden)
+                        .fixedSize()
+                        .padding(8)
                     }
                 }
-                .padding(8)
+                .overlay(alignment: .bottomTrailing) {
+                    if isPlaying {
+                        Label("Live", systemImage: "dot.radiowaves.left.and.right")
+                            .font(.system(size: 10, weight: .bold))
+                            .foregroundStyle(.white)
+                            .padding(.horizontal, 8)
+                            .padding(.vertical, 4)
+                            .background(Capsule().fill(Color.accentColor))
+                            .padding(8)
+                    }
+                }
+                .overlay {
+                    if isHovered && !isPlaying {
+                        Button(action: onPlay) {
+                            Image(systemName: "play.fill")
+                                .font(.system(size: 18, weight: .bold))
+                                .foregroundStyle(.black)
+                                .frame(width: 46, height: 46)
+                                .background(Circle().fill(.white))
+                                .shadow(color: .black.opacity(0.3), radius: 6)
+                        }
+                        .buttonStyle(.plain)
+                        .help("Set as wallpaper")
+                        .transition(.scale.combined(with: .opacity))
+                    }
+                }
+                .clipShape(RoundedRectangle(cornerRadius: 14, style: .continuous))
+                .overlay(
+                    RoundedRectangle(cornerRadius: 14, style: .continuous)
+                        .strokeBorder(isPlaying ? Color.accentColor : Color.primary.opacity(0.08), lineWidth: isPlaying ? 3 : 1)
+                )
+                .shadow(color: .black.opacity(isHovered ? 0.3 : 0.15), radius: isHovered ? 12 : 5, y: isHovered ? 6 : 2)
+                .scaleEffect(isHovered ? 1.025 : 1)
+                .onTapGesture(count: 2, perform: onPlay)
 
-                if isHovered && !isPlaying {
-                    Button(action: onPlay) {
-                        Image(systemName: "play.circle.fill")
-                            .font(.system(size: 48))
-                            .foregroundColor(.white)
-                            .shadow(radius: 4)
-                    }
-                    .buttonStyle(.plain)
-                    .help("Set as wallpaper")
-                }
+            VStack(alignment: .leading, spacing: 2) {
+                Text(video.title)
+                    .font(.system(size: 13, weight: .semibold))
+                    .lineLimit(1)
+                    .truncationMode(.middle)
+                Text(metadata.map { "\($0.resolutionLabel) · \($0.durationLabel)\($0.isHEVC ? " · HEVC" : "")" } ?? " ")
+                    .font(.system(size: 11))
+                    .foregroundStyle(.secondary)
             }
-            .clipShape(RoundedRectangle(cornerRadius: 14))
-            .overlay(
-                RoundedRectangle(cornerRadius: 14)
-                    .stroke(isPlaying ? Color.accentColor : .clear, lineWidth: 3)
-            )
-            .shadow(color: .black.opacity(0.2), radius: 6, x: 0, y: 3)
-            .onTapGesture(count: 2, perform: onPlay)
-
-            Text(video.title)
-                .font(.system(size: 14, weight: isPlaying ? .bold : .medium))
-                .lineLimit(1)
-                .truncationMode(.middle)
-                .padding(.horizontal, 6)
+            .padding(.horizontal, 4)
         }
         .onHover { hovering in
-            withAnimation(.easeInOut(duration: 0.15)) {
+            withAnimation(.spring(duration: 0.25)) {
                 if hovering {
                     hoveredURL = video.url
                 } else if hoveredURL == video.url {
@@ -314,7 +337,6 @@ struct VideoCardView<MenuItems: View>: View {
             }
         }
         .task(id: video.url) {
-            thumbnail = await ThumbnailGenerator.shared.thumbnail(for: video.url)
             metadata = await VideoLibrary.shared.metadata(for: video.url)
         }
     }

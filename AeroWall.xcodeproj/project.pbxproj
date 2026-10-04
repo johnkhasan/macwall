@@ -15,6 +15,7 @@
 		36A8D2AE9A7E8F9732BB2FD5 /* AppSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5D608026C02B88EEDE0ED44 /* AppSettings.swift */; };
 		3DB982D01DA9553435CA0834 /* VideoLibrary.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE97BB186DB6B36750B15773 /* VideoLibrary.swift */; };
 		49548DE94A0D62086977A246 /* PauseController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F09AA30FCDEE7AD406A110B /* PauseController.swift */; };
+		5B3ABD7940DF76F9D7B4ED3F /* Components.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1D4791AC151A2F1199AB5A9 /* Components.swift */; };
 		771814DAC442C2D9065D73B5 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2759667F42458B9C2A7BFB67 /* Assets.xcassets */; };
 		944153DB6D589FEF368DF83D /* VideoImporter.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFC94C73D45BA7FFD4DAE600 /* VideoImporter.swift */; };
 		A50309408B82B843373A2A37 /* ThumbnailGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B213D45B9B1AEF5AC06EFECC /* ThumbnailGenerator.swift */; };
@@ -48,6 +49,7 @@
 		B4A27001C77A5FD38BE9F8D0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		C8F4F18F2B706FCEEE9F53BC /* ScreenManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScreenManager.swift; sourceTree = "<group>"; };
 		CEE05D8910FA569EBA84E840 /* PlaylistManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaylistManager.swift; sourceTree = "<group>"; };
+		D1D4791AC151A2F1199AB5A9 /* Components.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Components.swift; sourceTree = "<group>"; };
 		D6EAAF94A3977D14B9A40A77 /* PlayerController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerController.swift; sourceTree = "<group>"; };
 		E5D608026C02B88EEDE0ED44 /* AppSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppSettings.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -146,6 +148,7 @@
 		DE6E3041B1105E0EEA7894FA /* Settings */ = {
 			isa = PBXGroup;
 			children = (
+				D1D4791AC151A2F1199AB5A9 /* Components.swift */,
 				9D0A43D96ADA73842ED89FBD /* LibraryView.swift */,
 				03B2E595024F65BEDE221450 /* SettingsView.swift */,
 			);
@@ -226,6 +229,7 @@
 				B49570C70681CFFF075926F8 /* AppDelegate.swift in Sources */,
 				36A8D2AE9A7E8F9732BB2FD5 /* AppSettings.swift in Sources */,
 				B79FDD3A3232DDD82D9C94CC /* AppearanceObserver.swift in Sources */,
+				5B3ABD7940DF76F9D7B4ED3F /* Components.swift in Sources */,
 				0676B344565BB7E709BCB269 /* DesktopPictureSync.swift in Sources */,
 				06C6D73A88695650D5886B63 /* HEVCConverter.swift in Sources */,
 				A65FA4D22779910441C5C792 /* LibraryView.swift in Sources */,
