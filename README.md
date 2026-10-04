@@ -1,4 +1,16 @@
-# AeroWall 🌬️
+<p align="center">
+  <img src="AeroWall/Assets.xcassets/AppIcon.appiconset/icon_128x128@2x.png" width="128" alt="AeroWall icon">
+</p>
+
+<h1 align="center">AeroWall</h1>
+
+<p align="center">
+  <a href="https://github.com/johnkhasan/macwall/releases/latest/download/AeroWall.dmg">
+    <img src="https://img.shields.io/badge/Download-AeroWall.dmg-5B4BDB?style=for-the-badge&logo=apple&logoColor=white" alt="Download AeroWall.dmg">
+  </a>
+  <br>
+  <sub>macOS 14 Sonoma or newer · Apple Silicon & Intel · <a href="https://github.com/johnkhasan/macwall/releases">All releases</a></sub>
+</p>
 
 AeroWall is a native macOS live wallpaper application built with Swift and AppKit. It allows you to play local video files directly on your desktop background, supporting multiple monitors, smart pausing for battery/performance, and customizable playlists.
 
@@ -14,9 +26,9 @@ AeroWall is a native macOS live wallpaper application built with Swift and AppKi
 ## Installation
 Since AeroWall manipulates the desktop window level, it cannot be distributed via the Mac App Store.
 
-1. Download the latest `.dmg` from the [Releases](https://github.com/your-username/AeroWall/releases) page.
-2. Drag and drop `AeroWall.app` into your `Applications` folder.
-3. Open `AeroWall`.
+1. **[Download AeroWall.dmg](https://github.com/johnkhasan/macwall/releases/latest/download/AeroWall.dmg)** (always the latest version).
+2. Open the DMG and drag `AeroWall` onto the `Applications` folder.
+3. Open AeroWall from Applications. It lives in the menu bar (look for the ▶︎ TV icon).
 
 ### Note on Gatekeeper
 If you see an "App cannot be opened" warning (Gatekeeper), do the following:
