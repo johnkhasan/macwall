@@ -80,6 +80,7 @@ final class AppSettings: ObservableObject {
         static let weatherLatitude = "weatherLatitude"
         static let weatherLongitude = "weatherLongitude"
         static let convertOnImport = "convertOnImport"
+        static let catalogDownloads = "catalogDownloads"
         static let hasLaunchedBefore = "hasLaunchedBefore"
     }
 
@@ -130,6 +131,8 @@ final class AppSettings: ObservableObject {
     // MARK: General
 
     @Published var convertOnImport: Bool { didSet { store(convertOnImport, Keys.convertOnImport) } }
+    /// Online catalog wallpaper id → video file name it was saved as.
+    @Published var catalogDownloads: [String: String] { didSet { store(catalogDownloads, Keys.catalogDownloads) } }
     @Published var hasLaunchedBefore: Bool { didSet { store(hasLaunchedBefore, Keys.hasLaunchedBefore) } }
 
     private init() {
@@ -183,6 +186,7 @@ final class AppSettings: ObservableObject {
         weatherLatitude = defaults.object(forKey: Keys.weatherLatitude) as? Double
         weatherLongitude = defaults.object(forKey: Keys.weatherLongitude) as? Double
         convertOnImport = defaults.bool(forKey: Keys.convertOnImport)
+        catalogDownloads = defaults.dictionary(forKey: Keys.catalogDownloads) as? [String: String] ?? [:]
         hasLaunchedBefore = defaults.bool(forKey: Keys.hasLaunchedBefore)
     }
 
@@ -214,6 +218,9 @@ final class AppSettings: ObservableObject {
         }
         if playlist.contains(old) {
             playlist = playlist.compactMap { $0 == old ? new : $0 }
+        }
+        if catalogDownloads.values.contains(old) {
+            catalogDownloads = catalogDownloads.compactMapValues { $0 == old ? new : $0 }
         }
     }
 }

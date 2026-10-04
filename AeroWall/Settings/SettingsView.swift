@@ -3,6 +3,7 @@ import ServiceManagement
 
 enum SidebarItem: String, CaseIterable, Identifiable {
     case library = "Library"
+    case discover = "Discover"
     case displays = "Displays & Audio"
     case schedule = "Playlist & Schedule"
     case effects = "Overlay Effects"
@@ -15,6 +16,7 @@ enum SidebarItem: String, CaseIterable, Identifiable {
     var icon: String {
         switch self {
         case .library: return "photo.on.rectangle.angled"
+        case .discover: return "globe"
         case .displays: return "display.2"
         case .schedule: return "clock.arrow.2.circlepath"
         case .effects: return "wand.and.stars"
@@ -27,6 +29,7 @@ enum SidebarItem: String, CaseIterable, Identifiable {
     var color: Color {
         switch self {
         case .library: return .blue
+        case .discover: return .teal
         case .displays: return .indigo
         case .schedule: return .orange
         case .effects: return .purple
@@ -60,6 +63,7 @@ struct SettingsView: View {
         } detail: {
             switch selection {
             case .library: LibraryView()
+            case .discover: CatalogView()
             case .displays: DisplaySettingsView()
             case .schedule: ScheduleSettingsView()
             case .effects: EffectsSettingsView()

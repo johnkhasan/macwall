@@ -88,9 +88,7 @@ final class VideoLibrary: ObservableObject {
         let job = ImportJob(name: source.deletingPathExtension().lastPathComponent)
         importJobs.append(job)
         let convert = AppSettings.shared.convertOnImport
-        let longestSide = NSScreen.screens
-            .map { max($0.frame.width, $0.frame.height) * $0.backingScaleFactor }
-            .max() ?? 3840
+        let longestSide = Self.displayLongestSide
 
         Task {
             let accessing = source.startAccessingSecurityScopedResource()
@@ -116,6 +114,31 @@ final class VideoLibrary: ObservableObject {
                 lastError = error.localizedDescription
             }
         }
+    }
+
+    /// Imports a file downloaded from the online catalog. The caller owns `file` and its progress UI.
+    func importDownloadedVideo(
+        _ file: URL,
+        progress: @escaping @Sendable (Double, Bool) -> Void
+    ) async throws -> URL {
+        let imported = try await VideoImporter.importVideo(
+            from: file,
+            into: directory,
+            convert: AppSettings.shared.convertOnImport,
+            displayLongestSide: Self.displayLongestSide,
+            progress: progress
+        )
+        reload()
+        if AppSettings.shared.wallpaper == nil {
+            AppSettings.shared.wallpaper = imported.lastPathComponent
+        }
+        return imported
+    }
+
+    private static var displayLongestSide: CGFloat {
+        NSScreen.screens
+            .map { max($0.frame.width, $0.frame.height) * $0.backingScaleFactor }
+            .max() ?? 3840
     }
 
     private func updateJob(_ id: UUID, progress: Double, converting: Bool) {
