@@ -81,6 +81,8 @@ final class AppSettings: ObservableObject {
         static let weatherLongitude = "weatherLongitude"
         static let convertOnImport = "convertOnImport"
         static let catalogDownloads = "catalogDownloads"
+        static let screenSaverEnabled = "screenSaverEnabled"
+        static let screenSaverVideo = "screenSaverVideo"
         static let hasLaunchedBefore = "hasLaunchedBefore"
     }
 
@@ -133,6 +135,12 @@ final class AppSettings: ObservableObject {
     @Published var convertOnImport: Bool { didSet { store(convertOnImport, Keys.convertOnImport) } }
     /// Online catalog wallpaper id → video file name it was saved as.
     @Published var catalogDownloads: [String: String] { didSet { store(catalogDownloads, Keys.catalogDownloads) } }
+
+    // MARK: Screen saver
+
+    @Published var screenSaverEnabled: Bool { didSet { store(screenSaverEnabled, Keys.screenSaverEnabled) } }
+    /// Video file name to use as the screen saver, or nil to follow the current wallpaper.
+    @Published var screenSaverVideo: String? { didSet { store(screenSaverVideo, Keys.screenSaverVideo) } }
     @Published var hasLaunchedBefore: Bool { didSet { store(hasLaunchedBefore, Keys.hasLaunchedBefore) } }
 
     private init() {
@@ -187,6 +195,8 @@ final class AppSettings: ObservableObject {
         weatherLongitude = defaults.object(forKey: Keys.weatherLongitude) as? Double
         convertOnImport = defaults.bool(forKey: Keys.convertOnImport)
         catalogDownloads = defaults.dictionary(forKey: Keys.catalogDownloads) as? [String: String] ?? [:]
+        screenSaverEnabled = defaults.bool(forKey: Keys.screenSaverEnabled)
+        screenSaverVideo = defaults.string(forKey: Keys.screenSaverVideo)
         hasLaunchedBefore = defaults.bool(forKey: Keys.hasLaunchedBefore)
     }
 
@@ -213,6 +223,7 @@ final class AppSettings: ObservableObject {
         if wallpaper == old { wallpaper = new }
         if lightWallpaper == old { lightWallpaper = new }
         if darkWallpaper == old { darkWallpaper = new }
+        if screenSaverVideo == old { screenSaverVideo = new }
         if displayAssignments.values.contains(old) {
             displayAssignments = displayAssignments.compactMapValues { $0 == old ? new : $0 }
         }

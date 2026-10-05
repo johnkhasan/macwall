@@ -7,12 +7,18 @@ targets:
   AeroWall:
     type: application
     platform: macOS
-    sources: [AeroWall]
+    sources: [AeroWall, Shared]
     settings:
       CODE_SIGN_IDENTITY: "-"
       CODE_SIGN_STYLE: Manual
       ENABLE_HARDENED_RUNTIME: YES
       ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
+    dependencies:
+      - target: AeroWallSaver
+        embed: true
+        codeSign: true
+        copy:
+          destination: plugins
     info:
       path: AeroWall/Info.plist
       properties:
@@ -25,3 +31,26 @@ targets:
         CFBundlePackageType: APPL
         CFBundleShortVersionString: "1.0"
         CFBundleVersion: "1"
+
+  AeroWallSaver:
+    type: bundle
+    platform: macOS
+    sources: [AeroWallSaver, Shared]
+    settings:
+      CODE_SIGN_IDENTITY: "-"
+      CODE_SIGN_STYLE: Manual
+      ENABLE_HARDENED_RUNTIME: YES
+      WRAPPER_EXTENSION: saver
+      PRODUCT_BUNDLE_IDENTIFIER: com.aerowall.AeroWall.Saver
+      SKIP_INSTALL: YES
+    dependencies:
+      - sdk: ScreenSaver.framework
+      - sdk: AVKit.framework
+      - sdk: AVFoundation.framework
+    info:
+      path: AeroWallSaver/Info.plist
+      properties:
+        NSPrincipalClass: AeroWallSaverView
+        CFBundlePackageType: BNDL
+        CFBundleName: AeroWall
+        NSHumanReadableCopyright: "Copyright © 2026 AeroWall contributors. MIT License."

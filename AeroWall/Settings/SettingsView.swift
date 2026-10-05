@@ -6,6 +6,7 @@ enum SidebarItem: String, CaseIterable, Identifiable {
     case discover = "Discover"
     case displays = "Displays & Audio"
     case schedule = "Playlist & Schedule"
+    case screensaver = "Screen Saver"
     case effects = "Overlay Effects"
     case energy = "Energy Saving"
     case general = "General"
@@ -19,6 +20,7 @@ enum SidebarItem: String, CaseIterable, Identifiable {
         case .discover: return "globe"
         case .displays: return "display.2"
         case .schedule: return "clock.arrow.2.circlepath"
+        case .screensaver: return "moon.stars.fill"
         case .effects: return "wand.and.stars"
         case .energy: return "leaf.fill"
         case .general: return "gearshape.fill"
@@ -32,6 +34,7 @@ enum SidebarItem: String, CaseIterable, Identifiable {
         case .discover: return .teal
         case .displays: return .indigo
         case .schedule: return .orange
+        case .screensaver: return .indigo
         case .effects: return .purple
         case .energy: return .green
         case .general: return .gray
@@ -66,6 +69,7 @@ struct SettingsView: View {
             case .discover: CatalogView()
             case .displays: DisplaySettingsView()
             case .schedule: ScheduleSettingsView()
+            case .screensaver: ScreenSaverSettingsView()
             case .effects: EffectsSettingsView()
             case .energy: EnergySettingsView()
             case .general: GeneralSettingsView()
